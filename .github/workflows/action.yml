@@ -19,6 +19,6 @@ jobs:
       - name: Find accessdb files
         id: access-files
         run: |
-          $GITHUB_WORKSPACE/.github/workflows/command.sh HEAD
+          $GITHUB_WORKSPACE/.github/workflows/command.sh $GITHUB_SHA
         continue-on-error: true
 
