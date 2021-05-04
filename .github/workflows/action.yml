@@ -1,10 +1,46 @@
-name: Say Hello World
-on: push
+name: Diff AccessDB
+on: [pull_request]
 
 jobs:
-  sayHelloWorld:
+  generate-diffs:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: jacksoncougar/example-github-action@main
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+        
+      # - name: Setup DotNet
+      #   uses: actions/setup-dotnet@v1.7.2
+      #   with:
+      #     dotnet-version: 2.1.x
+
+      # - name: Build
+      #   run: |
+      #     export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+      #     dotnet publish ${{ github.workspace }}/SolutionCliTools/ -o ${{ github.workspace }}/bin -r linux-x64 --self-contained
+
+      - name: Install mdbtools
+        id: install-mdbtools
+        run: |
+          echo sudo apt update
+          sudo apt update
+          echo sudo apt --assume-yes install mdbtools
+          sudo apt --assume-yes install mdbtools
+      
+      - name: Find accessdb files
+        id: access-files
+        run: |
+          echo "::set-output name=result::$(${{ github.workspace }}/.github/workflows/command.sh ${{ github.event.pull_request.head.sha }} | jq -R -s '.')"
+        continue-on-error: true   
+
+      - name: Add Diff Comment to PR
+        id: add-comment
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DIFF: ${{join(steps.access-files.outputs.*, '\n')}}
+        run: |
+          curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -X POST -d '{"body": ${{ env.DIFF }}}' "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/comments"
+
+     
+
