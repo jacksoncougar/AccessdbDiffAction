@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace SolutionCliTools
 {
@@ -6,7 +7,7 @@ namespace SolutionCliTools
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
+			Console.Write(Path.ChangeExtension(args[0], ".xml"), File.ReadAllText(args[0]));
 		}
 	}
 }
