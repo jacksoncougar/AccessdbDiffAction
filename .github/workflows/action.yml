@@ -1,0 +1,10 @@
+name: Say Hello World
+on: push
+
+jobs:
+  sayHelloWorld:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: jacksoncougar/example-github-action@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
