@@ -5,4 +5,5 @@ AFTER="${1%.accdb}.xml"
 ACCESSDIFF="cat"
 $ACCESSDIFF $1 > "$BEFORE"
 $ACCESSDIFF $2 > "$AFTER"
+ls -al
 git diff --no-ext-diff --no-index  "$BEFORE" "$AFTER"
