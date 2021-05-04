@@ -1,4 +1,5 @@
 #!/bin/sh
+echo "accessdiff.sh"
 BEFORE="${2%.accdb}.xml"
 AFTER="${1%.accdb}.xml"
 ACCESSDIFF="cat"
