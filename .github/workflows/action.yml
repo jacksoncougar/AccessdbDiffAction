@@ -7,8 +7,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Setup DotNet
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: 3.1.x
+
+      - name: Build API project
+        run: dotnet publish SolutionCliTools -o /
+
       - name: Find accessdb files
+        id: access-files
         run: |
-          result=$(git status)
-          echo "$result"
+          .github/workflows/command.sh HEAD
+        continue-on-error: true
 

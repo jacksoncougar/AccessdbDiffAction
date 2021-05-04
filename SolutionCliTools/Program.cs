@@ -7,7 +7,7 @@ namespace SolutionCliTools
 	{
 		static void Main(string[] args)
 		{
-			Console.Write(Path.ChangeExtension(args[0], ".xml"), File.ReadAllText(args[0]));
+			Console.Write(File.ReadAllText(args[0]));
 		}
 	}
 }
