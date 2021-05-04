@@ -3,5 +3,5 @@ echo "command.sh"
 HASH=$1
 RESULT=$(git diff-tree --no-commit-id --name-only -r $HASH | grep accdb | xargs -I{} git difftool --extcmd=.github/workflows/accessdiff.sh $HASH~1 {} --no-prompt)
 echo "::error file=app.js,line=10,col=15::DIFF"
-echo "::error file=app.js,line=10,col=15::$RESULT"
+echo "$RESULT"
 exit 0
