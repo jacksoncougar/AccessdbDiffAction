@@ -121,7 +121,7 @@ namespace SolutionCliTools
 			}
 			else
 			{
-				accessConnection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + accessFilePath + ";User Id=Admin;Password=");
+				accessConnection = new OleDbConnection(@"Data Source=" + accessFilePath + ";User Id=Admin;Password=");
 			}
 
 			return accessConnection;
