@@ -18,27 +18,6 @@ jobs:
       - name: Build API project
         run: dotnet publish $GITHUB_WORKSPACE/SolutionCliTools/ -o $GITHUB_WORKSPACE/bin -c release -r ubuntu.18.04-x64 --self-contained
 
-      - name: Install OLEDB
-        run: |
-          sudo su
-          curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-
-          #Download appropriate package for the OS version
-          #Choose only ONE of the following, corresponding to your OS version
-
-          #Ubuntu 18.04
-          sudo curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list >  $GITHUB_WORKSPACE/etc/apt/sources.list.d/mssql-release.list
-
-          exit
-          # apt-get update
-          # ACCEPT_EULA=Y apt-get install -y msodbcsql17
-          # # optional: for bcp and sqlcmd
-          # ACCEPT_EULA=Y apt-get install -y mssql-tools
-          # echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> $GITHUB_WORKSPACE/.bashrc
-          # source $GITHUB_WORKSPACE/.bashrc
-          # # optional: for unixODBC development headers
-          # apt-get install -y unixodbc-dev
-
       - name: Find accessdb files
         id: access-files
         run: |
