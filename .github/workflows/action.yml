@@ -27,7 +27,7 @@ jobs:
           #Choose only ONE of the following, corresponding to your OS version
 
           #Ubuntu 18.04
-          curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
+          curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list >  $GITHUB_WORKSPACE/etc/apt/sources.list.d/mssql-release.list
 
           exit
           # apt-get update
