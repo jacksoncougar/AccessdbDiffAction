@@ -20,7 +20,7 @@ jobs:
 
       - name: Find accessdb files
         id: access-files
-        run: | 
+        run: |
           ${{ github.workspace }}/.github/workflows/command.sh ${{ github.event.pull_request.head.sha }}
         continue-on-error: true
 
