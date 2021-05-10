@@ -22,7 +22,7 @@ jobs:
         id: access-files
         shell: cmd
         run: |
-          dir ${{ github.workspace }}\.github\workflows\
+          dir /s ${{ github.workspace }}
           ${{ github.workspace }}\.github\workflows\command.sh ${{ github.event.pull_request.head.sha }}
         continue-on-error: true
 
