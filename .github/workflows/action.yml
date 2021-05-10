@@ -16,7 +16,7 @@ jobs:
           dotnet-version: 3.1.x
 
       - name: Build API project
-        run: dotnet publish $GITHUB_WORKSPACE/SolutionCliTools/ -o $GITHUB_WORKSPACE/bin -c release --self-contained
+        run: dotnet publish $GITHUB_WORKSPACE/SolutionCliTools/ -o $GITHUB_WORKSPACE/bin -c release
 
       - name: Find accessdb files
         id: access-files
