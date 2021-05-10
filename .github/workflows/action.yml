@@ -5,24 +5,24 @@ jobs:
   generate-diffs:
     runs-on: windows-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0
         
-      - name: Setup DotNet
-        uses: actions/setup-dotnet@v1.7.2
-        with:
-          dotnet-version: 3.1.x
+#       - name: Setup DotNet
+#         uses: actions/setup-dotnet@v1.7.2
+#         with:
+#           dotnet-version: 3.1.x
 
-      - name: Build API project
-        run: dotnet publish ${{ github.workspace }}/SolutionCliTools/ -o ${{ github.workspace }}/bin
+#       - name: Build API project
+#         run: dotnet publish ${{ github.workspace }}/SolutionCliTools/ -o ${{ github.workspace }}/bin
 
       - name: Find accessdb files
         id: access-files
         shell: cmd
         run: |
-          dir
+          dir ${{ github.workspace }}\.github\workflows\
           ${{ github.workspace }}\.github\workflows\command.sh ${{ github.event.pull_request.head.sha }}
         continue-on-error: true
 
