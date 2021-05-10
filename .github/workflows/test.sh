@@ -1,5 +1,6 @@
 #!/bin/sh
 echo $1
+echo $2
 {
   truncate -s 0 $2
   for table in $(mdb-tables $1)
