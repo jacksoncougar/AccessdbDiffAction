@@ -16,13 +16,12 @@ jobs:
 #           dotnet-version: 3.1.x
 
 #       - name: Build API project
-#         run: dotnet publish ${{ github.workspace }}/SolutionCliTools/ -o ${{ github.workspace }}/bin
+#         run: dotnet publish ${{ github.workspace }}\SolutionCliTools\ -o ${{ github.workspace }}/bin
 
       - name: Find accessdb files
         id: access-files
         shell: cmd
         run: |
-          dir /s ${{ github.workspace }}
           ${{ github.workspace }}\.github\workflows\command.sh ${{ github.event.pull_request.head.sha }}
         continue-on-error: true
 
