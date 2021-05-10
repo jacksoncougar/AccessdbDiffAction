@@ -121,7 +121,7 @@ namespace SolutionCliTools
 			}
 			else
 			{
-				accessConnection = new OleDbConnection(@"ODBC;DRIVER=ODBC Driver 17 for SQL Server;Data Source=" + accessFilePath + ";User Id=Admin;Password=");
+				accessConnection = new OleDbConnection(@"Provider=SQLOLEDB;ODBC;DRIVER=ODBC Driver 17 for SQL Server;Data Source=" + accessFilePath + ";User Id=Admin;Password=");
 			}
 
 			return accessConnection;
