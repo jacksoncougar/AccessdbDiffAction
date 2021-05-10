@@ -20,13 +20,17 @@ jobs:
       #     export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
       #     dotnet publish ${{ github.workspace }}/SolutionCliTools/ -o ${{ github.workspace }}/bin -r linux-x64 --self-contained
 
-      - name: Find accessdb files
-        id: access-files
+      - name: Install mdbtools
+        id: install-mdbtools
         run: |
           echo sudo apt update
           sudo apt update
           echo sudo apt --assume-yes install mdbtools
           sudo apt --assume-yes install mdbtools
+
+      - name: Find accessdb files
+        id: access-files
+        run: |
           ${{ github.workspace }}/.github/workflows/command.sh ${{ github.event.pull_request.head.sha }}
-        continue-on-error: true
+        continue-on-error: true        
 
