@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 jobs:
   generate-diffs:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,7 +16,7 @@ jobs:
           dotnet-version: 3.1.x
 
       - name: Build API project
-        run: dotnet publish $GITHUB_WORKSPACE/SolutionCliTools/ -o $GITHUB_WORKSPACE/bin -c release -r ubuntu.18.04-x64 --self-contained
+        run: dotnet publish $GITHUB_WORKSPACE/SolutionCliTools/ -o $GITHUB_WORKSPACE/bin -c release --self-contained
 
       - name: Find accessdb files
         id: access-files
