@@ -3,25 +3,30 @@ on: [pull_request]
 
 jobs:
   generate-diffs:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0 
+          fetch-depth: 0
         
-      - name: Setup DotNet
-        uses: actions/setup-dotnet@v1.7.2
-        with:
-          dotnet-version: 3.1.x
+      # - name: Setup DotNet
+      #   uses: actions/setup-dotnet@v1.7.2
+      #   with:
+      #     dotnet-version: 2.1.x
 
-      - name: Build
-        run: |
-          dotnet publish ${{ github.workspace }}\SolutionCliTools\ -o ${{ github.workspace }}/bin
+      # - name: Build
+      #   run: |
+      #     export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+      #     dotnet publish ${{ github.workspace }}/SolutionCliTools/ -o ${{ github.workspace }}/bin -r linux-x64 --self-contained
 
       - name: Find accessdb files
         id: access-files
         run: |
-          ${{ github.workspace }}\.github\workflows\command.ps1 ${{ github.event.pull_request.head.sha }}
+          echo sudo apt update
+          sudo apt update
+          echo sudo apt --assume-yes install mdbtools
+          sudo apt --assume-yes install mdbtools
+          ${{ github.workspace }}/.github/workflows/command.sh ${{ github.event.pull_request.head.sha }}
         continue-on-error: true
 

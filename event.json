@@ -1,0 +1,11 @@
+{
+  "pull_request": {
+    "head": {
+      "ref": "sample-head-ref",
+      "sha": "cc16265449856e28755041116826a70127cf6ef1"
+    },
+    "base": {
+      "ref": "sample-base-ref"
+    }
+  }
+}
