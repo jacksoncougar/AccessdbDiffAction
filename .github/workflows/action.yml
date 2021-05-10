@@ -15,7 +15,7 @@ jobs:
         with:
           dotnet-version: 3.1.x
 
-      - name: Build API project
+      - name: Build
         run: dotnet publish ${{ github.workspace }}/SolutionCliTools/ -o ${{ github.workspace }}/bin -property:InvariantGlobalization=false
 
       - name: Find accessdb files
