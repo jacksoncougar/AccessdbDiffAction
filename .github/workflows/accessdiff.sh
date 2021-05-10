@@ -10,4 +10,4 @@ $ACCESSDIFF $1 "$AFTER"
 
 echo "accessdiff.sh"
 
-git diff --no-index  $BEFORE $AFTER
+git diff --no-ext-diff --no-index  $BEFORE $AFTER
