@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 jobs:
   generate-diffs:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -20,7 +20,6 @@ jobs:
 
       - name: Find accessdb files
         id: access-files
-        shell: cmd
         run: | 
           ${{ github.workspace }}\.github\workflows\command.sh ${{ github.event.pull_request.head.sha }}
         continue-on-error: true
