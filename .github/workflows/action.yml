@@ -17,7 +17,6 @@ jobs:
 
       - name: Build
         run: |
-          export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
           dotnet publish ${{ github.workspace }}/SolutionCliTools/ -o ${{ github.workspace }}/bin
 
       - name: Find accessdb files
