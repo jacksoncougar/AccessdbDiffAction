@@ -27,6 +27,6 @@ jobs:
           sudo apt update
           echo sudo apt --assume-yes install mdbtools
           sudo apt --assume-yes install mdbtools
-          ${{ github.workspace }}/.github/workflows/command.sh ${{ github.event.pull_request.head.sha }}
+          sudo ${{ github.workspace }}/.github/workflows/command.sh ${{ github.event.pull_request.head.sha }}
         continue-on-error: true
 
