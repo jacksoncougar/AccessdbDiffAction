@@ -17,11 +17,11 @@ jobs:
 
       - name: Build
         run: |
-          dotnet publish ${{ github.workspace }}/SolutionCliTools/ -o ${{ github.workspace }}/bin
+          dotnet publish ${{ github.workspace }}\SolutionCliTools\ -o ${{ github.workspace }}/bin
 
       - name: Find accessdb files
         id: access-files
         run: |
-          ${{ github.workspace }}/.github/workflows/command.sh ${{ github.event.pull_request.head.sha }}
+          ${{ github.workspace }}\.github\workflows\command.sh ${{ github.event.pull_request.head.sha }}
         continue-on-error: true
 
