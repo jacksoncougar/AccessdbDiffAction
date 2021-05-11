@@ -4,8 +4,7 @@ on: [pull_request]
 jobs:
   generate-diffs:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write   
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
