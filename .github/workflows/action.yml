@@ -31,7 +31,7 @@ jobs:
       - name: Add Diff Comment to PR
         id: add-comment
         run: |
-          curl -s -u "${GITHUB_ACCOUNT} -X POST -d '{"body": "Your Message to Comment"}' "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMBER}/comments"
+          curl -s -H "Authorization: token ${ACCESS_TOKEN}" -X POST -d '{"body": "Your Message to Comment"}' "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/issues/${PR_NUMBER}/comments"
 
       - name: Find accessdb files
         id: access-files
