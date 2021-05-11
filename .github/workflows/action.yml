@@ -32,7 +32,7 @@ jobs:
       - name: Find accessdb files
         id: access-files
         run: |
-          ::set-output name=result::$(${{ github.workspace }}/.github/workflows/command.sh ${{ github.event.pull_request.head.sha }}) 
+          echo "::set-output name=result::$(${{ github.workspace }}/.github/workflows/command.sh ${{ github.event.pull_request.head.sha }})"
         continue-on-error: true   
 
       - name: Add Diff Comment to PR
