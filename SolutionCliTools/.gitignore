@@ -15,8 +15,6 @@
 
 # Mono auto generated files
 mono_crash.*
-.vs/
-act/
 
 # Build results
 [Dd]ebug/
@@ -362,5 +360,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-
-*.xml
