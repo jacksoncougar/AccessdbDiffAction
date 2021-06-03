@@ -6,4 +6,4 @@ ACCESSDIFF=".github/workflows/test.sh"
 $ACCESSDIFF $2 "$BEFORE"
 $ACCESSDIFF $1 "$AFTER"
 
-git diff --no-ext-diff --no-index  $BEFORE $AFTER
+git diff --no-ext-diff --no-index  $AFTER $BEFORE 
