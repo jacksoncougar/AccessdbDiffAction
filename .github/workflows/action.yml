@@ -29,7 +29,7 @@ jobs:
         id: install-csvtojson
         if: ${{ steps.list-modified-accdb-files.outputs.hasAccdbFiles }}
         run: |
-          npm i -g csvtojson
+          sudo npm i -g csvtojson
 
       - name: Find accessdb files
         id: accessfiles
