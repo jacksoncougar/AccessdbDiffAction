@@ -1,0 +1,11 @@
+{
+  "pull_request": {
+    "head": {
+      "ref": "HEAD",
+      "sha": "HEAD"
+    },
+    "base": {
+      "ref": "HEAD~1"
+    }
+  }
+}

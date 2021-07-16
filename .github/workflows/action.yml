@@ -2,7 +2,7 @@ name: Diff AccessDB
 on: [pull_request]
 
 jobs:
-  generate-diffs:
+  find-accdb-files:
     runs-on: ubuntu-latest
 
     steps:
@@ -10,37 +10,37 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-        
-      # - name: Setup DotNet
-      #   uses: actions/setup-dotnet@v1.7.2
-      #   with:
-      #     dotnet-version: 2.1.x
 
-      # - name: Build
-      #   run: |
-      #     export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
-      #     dotnet publish ${{ github.workspace }}/SolutionCliTools/ -o ${{ github.workspace }}/bin -r linux-x64 --self-contained
+      - name: List modified accdb files
+        id: list-modified-accdb-files
+        run: |
+          result=$(${{ github.workspace }}/.github/workflows/list-modified-accdb-files.sh ${{ github.event.pull_request.head.sha }} )
+          if [ -n "$result" ]; then echo "::set-output name=hasAccdbFiles::true" ; fi;
+          echo "::set-output name=accdbFiles::$result"
 
       - name: Install mdbtools
         id: install-mdbtools
+        if: ${{ steps.list-modified-accdb-files.outputs.hasAccdbFiles }}
         run: |
-          echo sudo apt update
           sudo apt update
-          echo sudo apt --assume-yes install mdbtools
           sudo apt --assume-yes install mdbtools
-      
-      - name: Find accessdb files
-        id: access-files
-        run: |
-          echo "::set-output name=result::$(${{ github.workspace }}/.github/workflows/command.sh ${{ github.event.pull_request.head.sha }} | jq -R -s '.')"
-        continue-on-error: true   
 
-      - name: Add Diff Comment to PR
+      - name: Install csvtojson
+        id: install-csvtojson
+        if: ${{ steps.list-modified-accdb-files.outputs.hasAccdbFiles }}
+        run: |
+          npm i -g csvtojson
+
+      - name: Find accessdb files
+        id: accessfiles
+        if: ${{ steps.list-modified-accdb-files.outputs.hasAccdbFiles }}
+        run: |
+          echo "::set-output name=result::$(${{ github.workspace }}/.github/workflows/diff-modified-accdb-files.sh ${{ github.event.pull_request.head.sha }} | jq --slurp --raw-input '.' )"
+
+      - name: Add diff comment to pull request
         id: add-comment
+        if: ${{ steps.list-modified-accdb-files.outputs.hasAccdbFiles }}
         env:
-          DIFF: ${{join(steps.access-files.outputs.*, '\n')}}
+          DIFF: ${{ steps.accessfiles.outputs.result }}
         run: |
           curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -X POST -d '{"body": ${{ env.DIFF }}}' "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/comments"
-
-     
-
