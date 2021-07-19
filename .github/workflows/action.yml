@@ -38,7 +38,7 @@ jobs:
         if: ${{ steps.list-accdb-files.outputs.hasAccdbFiles }}
         run: |
           result=$(${{ github.workspace }}/.github/workflows/diff-accdb-files.sh \
-            ${{ github.event.pull_request.head.sha }} \
+            ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} \
             | ${{ github.workspace }}/.github/workflows/convert-to-markdown-comment.sh \
             | jq --slurp --raw-input '.')
           echo "::set-output name=result::$result"
