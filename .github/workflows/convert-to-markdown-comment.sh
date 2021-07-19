@@ -1,3 +1,9 @@
+#!/bin/sh
+
 echo '```diff'
-echo $(</dev/stdin)
+DONE=false
+until $eof; do
+	read line || eof=true
+	echo $line
+done
 echo '```'
