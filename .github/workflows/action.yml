@@ -12,34 +12,34 @@ jobs:
           fetch-depth: 0
 
       - name: List modified accdb files
-        id: list-modified-accdb-files
+        id: list-accdb-files
         run: |
-          result=$(${{ github.workspace }}/.github/workflows/list-modified-accdb-files.sh ${{ github.event.pull_request.head.sha }} )
+          result=$(${{ github.workspace }}/.github/workflows/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} )
           if [ -n "$result" ]; then echo "::set-output name=hasAccdbFiles::true" ; fi;
           echo "::set-output name=accdbFiles::$result"
 
       - name: Install mdbtools
         id: install-mdbtools
-        if: ${{ steps.list-modified-accdb-files.outputs.hasAccdbFiles }}
+        if: ${{ steps.list-accdb-files.outputs.hasAccdbFiles }}
         run: |
           sudo apt update
           sudo apt --assume-yes install mdbtools
 
       - name: Install csvtojson
         id: install-csvtojson
-        if: ${{ steps.list-modified-accdb-files.outputs.hasAccdbFiles }}
+        if: ${{ steps.list-accdb-files.outputs.hasAccdbFiles }}
         run: |
           sudo npm i -g csvtojson
 
       - name: Find accessdb files
         id: accessfiles
-        if: ${{ steps.list-modified-accdb-files.outputs.hasAccdbFiles }}
+        if: ${{ steps.list-accdb-files.outputs.hasAccdbFiles }}
         run: |
-          echo "::set-output name=result::$(${{ github.workspace }}/.github/workflows/diff-modified-accdb-files.sh ${{ github.event.pull_request.head.sha }} | jq --slurp --raw-input '.' )"
+          echo "::set-output name=result::$(${{ github.workspace }}/.github/workflows/diff-accdb-files.sh ${{ github.event.pull_request.head.sha }} | jq --slurp --raw-input '.' )"
 
       - name: Add diff comment to pull request
         id: add-comment
-        if: ${{ steps.list-modified-accdb-files.outputs.hasAccdbFiles }}
+        if: ${{ steps.list-accdb-files.outputs.hasAccdbFiles }}
         env:
           DIFF: ${{ steps.accessfiles.outputs.result }}
         run: |
