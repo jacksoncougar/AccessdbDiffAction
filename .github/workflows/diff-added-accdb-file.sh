@@ -1,8 +1,5 @@
 #!/bin/sh
 
-echo $1
-echo $2
-
 BEFORE="${2%.accdb}-before.json"
 AFTER="${2%.accdb}.json"
 ACCESS_TO_JSON=".github/workflows/export-accdb-tables-to-json.sh"
