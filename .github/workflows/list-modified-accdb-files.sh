@@ -5,5 +5,5 @@ git diff-tree \
   --no-commit-id \
   --name-only \
   -r \
-  --diff-filter=M $HASH \
+  --diff-filter=AM $HASH \
   -- *.accdb
