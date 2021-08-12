@@ -13,7 +13,8 @@ runs:
   using: "composite"
   steps:
     - id: list-accdb-files
-
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
       run: |
         added=$(${{ github.action_path }}/.github/workflows/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "A" )
         modified=$(${{ github.action_path }}/.github/workflows/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "M" )
@@ -45,6 +46,8 @@ runs:
       shell: bash
 
     - id: generate-accdb-diff
+      env:
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
       run: |
         if [ ${{ env.HAS_ACCDB_FILES }} = true ]
          then

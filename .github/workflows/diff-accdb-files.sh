@@ -4,10 +4,10 @@ BASE=$2
 
 # gets the names of accdb files that have been modified in the given commit
 # and then pipes that into a custom diff script.
-.github/workflows/list-accdb-files.sh $HEAD "M" |
+${GITHUB_ACTION_PATH}/.github/workflows/list-accdb-files.sh $HEAD "M" |
 	xargs -I{} \
-		git difftool --extcmd=$GITHUB_ACTION_PATH/.github/workflows/diff-modified-accdb-file.sh "$BASE" {} --no-prompt
+		git difftool --extcmd="${GITHUB_ACTION_PATH}/.github/workflows/diff-modified-accdb-file.sh" "$BASE" {} --no-prompt
 
-.github/workflows/list-accdb-files.sh $HEAD "A" |
+${GITHUB_ACTION_PATH}/.github/workflows/list-accdb-files.sh $HEAD "A" |
 	xargs -I{} \
-		git difftool --extcmd=$GITHUB_ACTION_PATH/.github/workflows/diff-added-accdb-file.sh "$BASE" {} --no-prompt
+		git difftool --extcmd="${GITHUB_ACTION_PATH}/.github/workflows/diff-added-accdb-file.sh" "$BASE" {} --no-prompt
