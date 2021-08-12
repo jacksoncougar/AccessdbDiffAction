@@ -19,23 +19,33 @@ runs:
         result="$added $modified"
         if [ -n "$result" ]; then echo "::set-output name=has-accdb-files::$result" ; fi;
         echo "HAS_ACCDB_FILES=$result" >> $GITHUB_ENV
+      shell: bash
 
     - id: install-mdbtools
-      if: ${{ env.HAS_ACCDB_FILES }}
       run: |
-        sudo apt update
-        sudo apt --assume-yes install mdbtools
+        if [ -n ${{ env.HAS_ACCDB_FILES }}]
+        then
+          sudo apt update
+          sudo apt --assume-yes install mdbtools
+        fi
+      shell: bash
 
     - id: install-csvtojson
-      if: ${{ env.HAS_ACCDB_FILES }}
       run: |
-        sudo npm i -g csvtojson
+        if [ -n ${{ env.HAS_ACCDB_FILES }}]
+        then
+          sudo npm i -g csvtojson
+        fi
+      shell: bash
 
     - id: generate-accdb-diff
-      if: ${{ env.HAS_ACCDB_FILES }}
       run: |
-        result=$(${{ github.action_path }}/.github/workflows/diff-accdb-files.sh \
-          ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} \
-          | ${{ github.action_path }}/.github/workflows/convert-to-markdown-comment.sh \
-          | jq --slurp --raw-input '.')
-        echo "::set-output name=accdb-diff::$result"
+        if [ -n ${{ env.HAS_ACCDB_FILES }}]
+        then
+          result=$(${{ github.action_path }}/.github/workflows/diff-accdb-files.sh \
+            ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} \
+            | ${{ github.action_path }}/.github/workflows/convert-to-markdown-comment.sh \
+            | jq --slurp --raw-input '.')
+          echo "::set-output name=accdb-diff::$result"
+        fi
+      shell: bash
