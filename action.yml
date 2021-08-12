@@ -14,8 +14,8 @@ runs:
   steps:
     - id: list-accdb-files
       run: |
-        added=$(${{ github.action_path }}/.github/workflows/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "A" )
-        modified=$(${{ github.action_path }}/.github/workflows/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "M" )
+        added=$(.github/workflows/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "A" )
+        modified=$(.github/workflows/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "M" )
         result="$added $modified"
         if [ -n "$result" ]; then echo "::set-output name=has-accdb-files::$result" ; fi;
         if [ -n "$result" ]
@@ -25,6 +25,7 @@ runs:
           echo "HAS_ACCDB_FILES=false" >> $GITHUB_ENV
         fi
       shell: bash
+      working-directory: ${{ github.action_path }}
 
     - id: install-mdbtools
       run: |
@@ -34,6 +35,7 @@ runs:
           sudo apt --assume-yes install mdbtools
         fi
       shell: bash
+      working-directory: ${{ github.action_path }}
 
     - id: install-csvtojson
       run: |
@@ -42,15 +44,17 @@ runs:
            sudo npm i -g csvtojson
          fi
       shell: bash
+      working-directory: ${{ github.action_path }}
 
     - id: generate-accdb-diff
       run: |
         if [ ${{ env.HAS_ACCDB_FILES }} = true ]
          then
-           result=$(${{ github.action_path }}/.github/workflows/diff-accdb-files.sh \
+           result=$(.github/workflows/diff-accdb-files.sh \
              ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} \
-             | ${{ github.action_path }}/.github/workflows/convert-to-markdown-comment.sh \
+             | .github/workflows/convert-to-markdown-comment.sh \
              | jq --slurp --raw-input '.')
            echo "::set-output name=accdb-diff::$result"
          fi
       shell: bash
+      working-directory: ${{ github.action_path }}
