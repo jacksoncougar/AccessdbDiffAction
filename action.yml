@@ -7,7 +7,7 @@ outputs:
     value: ${{ steps.list-accdb-files.outputs.has-accdb-files }}
   accdb-diffs:
     description: "Text of accdb diff"
-    value: ${{ steps.generate-accdb-diff.outputs.accdb-diff }}
+    value: ${{ steps.generate-accdb-diff.outputs.accdb-diffs }}
 
 runs:
   using: "composite"
@@ -22,42 +22,34 @@ runs:
         if [ -n "$result" ]
         then 
           echo "HAS_ACCDB_FILES=true" >> $GITHUB_ENV
-          echo "::set-output name=has-accdb-files::$result" 
+          echo "::set-output name=has_accdb_files::true" 
         else          
           echo "HAS_ACCDB_FILES=false" >> $GITHUB_ENV
+          echo "::set-output name=has_accdb_files::false" 
         fi
+        echo "::debug::$result"
       shell: bash
 
     - id: install-mdbtools
       run: |
-        if [ ${{ env.HAS_ACCDB_FILES }} = true ]
-        then
-          sudo apt update
-          sudo apt --assume-yes install mdbtools
-        fi
+        sudo apt --assume-yes install mdbtools
       shell: bash
 
     - id: install-csvtojson
       run: |
-        if [ ${{ env.HAS_ACCDB_FILES }} = true ]
-         then
-           sudo npm i -g csvtojson
-         fi
+        sudo npm i -g csvtojson
       shell: bash
 
     - id: generate-accdb-diff
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
+        WORKSPACE: ${{ github.workspace }}
       run: |
-        if [ ${{ env.HAS_ACCDB_FILES }} = true ]
-         then
-           IFS=$'\n'
-           result=($(${{ github.action_path }}/diff-accdb-files.sh \
-             ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} \
-             | ${{ github.action_path }}/convert-to-markdown-comment.sh \
-             | jq --slurp --raw-input '.' \
-             | { cat; echo; } )) 
-           echo "::set-output name=accdb-diff::${result[@]}"
-           echo "${result[@]}"
-         fi
+        echo "V: 024"
+        echo "::debug::$(${{ github.action_path }}/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "A" )"
+        echo "::debug::$(${{ github.action_path }}/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "M" )"
+        result=$(${{ github.action_path }}/diff-accdb-files.sh \
+                ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }})
+
+        echo "::set-output name=accdb-diffs::${result}"
       shell: bash
