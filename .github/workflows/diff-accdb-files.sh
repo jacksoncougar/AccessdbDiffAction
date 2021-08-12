@@ -6,8 +6,8 @@ BASE=$2
 # and then pipes that into a custom diff script.
 .github/workflows/list-accdb-files.sh $HEAD "M" |
 	xargs -I{} \
-		git difftool --extcmd=.github/workflows/diff-modified-accdb-file.sh "$BASE" {} --no-prompt
+		git difftool --extcmd=$GITHUB_ACTION_PATH/.github/workflows/diff-modified-accdb-file.sh "$BASE" {} --no-prompt
 
 .github/workflows/list-accdb-files.sh $HEAD "A" |
 	xargs -I{} \
-		git difftool --extcmd=.github/workflows/diff-added-accdb-file.sh "$BASE" {} --no-prompt
+		git difftool --extcmd=$GITHUB_ACTION_PATH/.github/workflows/diff-added-accdb-file.sh "$BASE" {} --no-prompt
