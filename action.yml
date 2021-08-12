@@ -5,7 +5,7 @@ outputs:
   has-accdb-files:
     description: "True if accdb files were found"
     value: ${{ steps.list-accdb-files.outputs.has-accdb-files }}
-  accdb-diff:
+  accdb-diffs:
     description: "Text of accdb diff"
     value: ${{ steps.generate-accdb-diff.outputs.accdb-diff }}
 
@@ -16,14 +16,14 @@ runs:
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
       run: |
-        added=$(${{ github.action_path }}/.github/workflows/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "A" )
-        modified=$(${{ github.action_path }}/.github/workflows/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "M" )
+        added=$(${{ github.action_path }}/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "A" )
+        modified=$(${{ github.action_path }}/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "M" )
         result="$added $modified"
-        if [ -n "$result" ]; then echo "::set-output name=has-accdb-files::$result" ; fi;
         if [ -n "$result" ]
         then 
           echo "HAS_ACCDB_FILES=true" >> $GITHUB_ENV
-        else 
+          echo "::set-output name=has-accdb-files::$result" 
+        else          
           echo "HAS_ACCDB_FILES=false" >> $GITHUB_ENV
         fi
       shell: bash
@@ -51,10 +51,13 @@ runs:
       run: |
         if [ ${{ env.HAS_ACCDB_FILES }} = true ]
          then
-           result=$(${{ github.action_path }}/.github/workflows/diff-accdb-files.sh \
+           IFS=$'\n'
+           result=($(${{ github.action_path }}/diff-accdb-files.sh \
              ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} \
-             | ${{ github.action_path }}/.github/workflows/convert-to-markdown-comment.sh \
-             | jq --slurp --raw-input '.')
-           echo "::set-output name=accdb-diff::$result"
+             | ${{ github.action_path }}/convert-to-markdown-comment.sh \
+             | jq --slurp --raw-input '.' \
+             | { cat; echo; } )) 
+           echo "::set-output name=accdb-diff::${result[@]}"
+           echo "${result[@]}"
          fi
       shell: bash
