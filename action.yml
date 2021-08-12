@@ -18,12 +18,17 @@ runs:
         modified=$(${{ github.action_path }}/.github/workflows/list-accdb-files.sh ${{ github.event.pull_request.head.sha }} "M" )
         result="$added $modified"
         if [ -n "$result" ]; then echo "::set-output name=has-accdb-files::$result" ; fi;
-        echo "HAS_ACCDB_FILES=$result" >> $GITHUB_ENV
+        if [ -n "$result" ]
+        then 
+          echo "HAS_ACCDB_FILES=true" >> $GITHUB_ENV
+        else 
+          echo "HAS_ACCDB_FILES=false" >> $GITHUB_ENV
+        fi
       shell: bash
 
     - id: install-mdbtools
       run: |
-        if [ -n ${{ env.HAS_ACCDB_FILES }}]
+        if [ ${{ env.HAS_ACCDB_FILES }} = true ]
         then
           sudo apt update
           sudo apt --assume-yes install mdbtools
@@ -32,20 +37,20 @@ runs:
 
     - id: install-csvtojson
       run: |
-        if [ -n ${{ env.HAS_ACCDB_FILES }}]
-        then
-          sudo npm i -g csvtojson
-        fi
+        if [ ${{ env.HAS_ACCDB_FILES }} = true ]
+         then
+           sudo npm i -g csvtojson
+         fi
       shell: bash
 
     - id: generate-accdb-diff
       run: |
-        if [ -n ${{ env.HAS_ACCDB_FILES }}]
-        then
-          result=$(${{ github.action_path }}/.github/workflows/diff-accdb-files.sh \
-            ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} \
-            | ${{ github.action_path }}/.github/workflows/convert-to-markdown-comment.sh \
-            | jq --slurp --raw-input '.')
-          echo "::set-output name=accdb-diff::$result"
-        fi
+        if [ ${{ env.HAS_ACCDB_FILES }} = true ]
+         then
+           result=$(${{ github.action_path }}/.github/workflows/diff-accdb-files.sh \
+             ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }} \
+             | ${{ github.action_path }}/.github/workflows/convert-to-markdown-comment.sh \
+             | jq --slurp --raw-input '.')
+           echo "::set-output name=accdb-diff::$result"
+         fi
       shell: bash
