@@ -54,11 +54,11 @@ The schema of the json object looks like this:
 
 ```json
 {
-    files:
+   "files":
     [
         {
-            name: string
-            text: string
+            "name": string
+            "text": string
         },
         ...
     ]
