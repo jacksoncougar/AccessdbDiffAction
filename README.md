@@ -1,4 +1,4 @@
-# Access Database Diff Tool Action
+# Access Database File Diff Action
 
 This action generates JSON diffs for Access Database (accdb) files within the pull request.
 These diffs can then be used in other steps of your workflow to generate comments, or send alerts, etc.
