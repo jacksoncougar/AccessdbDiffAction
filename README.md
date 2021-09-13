@@ -47,9 +47,13 @@ jobs:
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/comments"
 ````
 
+### Ouputs
+
 There are two outputs returned by `access-database-file-diff-action`:
 - `has-accdb-files`: `true` if Access Database files were found.
 - `accdb-diffs`: a json object that contains the diff information of each Access Database file.
+
+### accdb-diffs schema
 
 The schema of the json object looks like this:
 
