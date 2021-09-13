@@ -60,7 +60,6 @@ The schema of the json object looks like this:
             "name": "the filename of the access database file",
             "text": "the git diff-tool output"
         },
-        #...
     ]
 }
 ```
