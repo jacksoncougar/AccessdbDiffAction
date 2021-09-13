@@ -48,8 +48,9 @@ jobs:
 ````
 
 There are two outputs returned by `access-database-file-diff-action`:
-`has-accdb-files`: `true` if Access Database files were found.
-`accdb-diffs`: a json object that contains the diff information of each Access Database file.
+- `has-accdb-files`: `true` if Access Database files were found.
+- `accdb-diffs`: a json object that contains the diff information of each Access Database file.
+
 The schema of the json object looks like this:
 
 ```json
