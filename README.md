@@ -1,5 +1,7 @@
 # Access Database File Diff Action
 
+![](images/access-diff.png)
+
 This action generates JSON diffs for Access Database (accdb) files within the pull request.
 These diffs can then be used in other steps of your workflow to generate comments, or send alerts, etc.
 
@@ -69,8 +71,8 @@ The schema of the json object looks like this:
 }
 ```
 
-
 ## Screenshots
+
 ![](images/2021-09-13-07-56-49.png)
 
 ![](images/2021-09-13-07-55-45.png)
